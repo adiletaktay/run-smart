@@ -14,7 +14,7 @@ $(document).ready(function(){
             }
         ]
     });
-
+    
     $('ul.catalog__tabs').on('click', 'li:not(.catalog__tab_active)', function() {
         $(this)
           .addClass('catalog__tab_active').siblings().removeClass('catalog__tab_active')
@@ -35,12 +35,12 @@ $(document).ready(function(){
     toggleSlide('.catalog-item__back');
 
     // Modal
-    
+
     $('[data-modal=consultation]').on('click', function() {
         $('.overlay, #consultation').fadeIn('slow');
     });
     $('.modal__close').on('click', function() {
-        $('.overlay, #consultation, #order, #thanks').fadeOut('slow');
+        $('.overlay, #consultation, #thanks, #order').fadeOut('slow');
     });
 
     $('.button_mini').each(function(i) {
@@ -50,7 +50,7 @@ $(document).ready(function(){
         })
     });
 
-    function valideForms(form){
+    function validateForms(form){
         $(form).validate({
             rules: {
                 name: {
@@ -67,24 +67,23 @@ $(document).ready(function(){
                 name: {
                     required: "Пожалуйста, введите свое имя",
                     minlength: jQuery.validator.format("Введите {0} символа!")
-                },
+                  },
                 phone: "Пожалуйста, введите свой номер телефона",
                 email: {
-                    required: "Пожалуйста, введите свою почту",
-                    email: "Неправильно введен адрес почты"
+                  required: "Пожалуйста, введите свою почту",
+                  email: "Неправильно введен адрес почты"
                 }
             }
         });
     };
 
-    valideForms('#consultation-form');
-    valideForms('#consultation form');
-    valideForms('#order form');
+    validateForms('#consultation-form');
+    validateForms('#consultation form');
+    validateForms('#order form');
 
     $('input[name=phone]').mask("+7 (999) 999-99-99");
 
-    $('.feed-form').submit(function(e) {
-        debugger;
+    $('form').submit(function(e) {
         e.preventDefault();
         $.ajax({
             type: "POST",
@@ -99,4 +98,22 @@ $(document).ready(function(){
         });
         return false;
     });
+
+    // Smooth scroll and pageup
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 1600) {
+            $('.pageup').fadeIn();
+        } else {
+            $('.pageup').fadeOut();
+        }
+    });
+
+    $("a[href=#up]").click(function(){
+        const _href = $(this).attr("href");
+        $("html, body").animate({scrollTop: $(_href).offset().top+"px"});
+        return false;
+    });
+
+    new WOW().init();
 });
